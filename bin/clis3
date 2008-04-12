@@ -62,6 +62,12 @@ Main {
     end
   end
 
+  mode("cat") do
+    def run
+      Cliaws.s3.get(params["s3_object"].value, STDOUT)
+    end
+  end
+
   mode("get") do
     argument("local_file") do
       argument_required
