@@ -1,32 +1,57 @@
 = cliaws
 
-* FIX (url)
+* http://rubyforge.org/projects/cliaws
 
 == DESCRIPTION:
 
-FIX (describe your package)
+A command-line client for Amazon Web Services.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Amazon keys are read from the environment only.  They environment keys must
+  be named:  AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+* Minimal amount of error checking is done.  Check the command's status after
+  each call.
+* No logging.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+Usage from the command line:
+
+  $ s3 list my_awesome_bucket/a_glob
+  $ s3 put my_awesome_bucket/a_key_name a_local_file
+  $ cat a_local_file | s3 put my_awesome_bucket/a_key_name
+  $ s3 put --data "this is the data" my_awesome_bucket/a_key_name
+  $ s3 get my_awesome_bucket/a_key_name
+  $ s3 head my_awesome_bucket/a_key_name
+    # Returns a YAML representation of response and metadata headers
+  $ s3 rm my_awesome_bucket/a_key_name
+
+Cliaws may also be used from Ruby:
+
+  Cliaws.s3.list("my_awesome_bucket/a_glob") # Returns an array of names
+  Cliaws.s3.put(File.open("a_local_file", "rb"), "my_awesome_bucket/a_key_name")
+  Cliaws.s3.put(STDIN, "my_awesome_bucket/a_key_name")
+  Cliaws.s3.put("this is the data", "my_awesome_bucket/a_key_name")
+  Cliaws.s3.get("my_awesome_bucket/a_key_name")
+  Cliaws.s3.head("my_awesome_bucket/a_key_name")
+  Cliaws.s3.rm("my_awesome_bucket/a_key_name")
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* main
+* activesupport
+* right_aws
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install cliaws
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2008 François Beausoleil (francois@teksol.info)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
