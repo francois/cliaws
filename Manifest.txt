@@ -4,7 +4,7 @@ License.txt
 Manifest.txt
 README.txt
 Rakefile
-bin/s3
+bin/clis3
 config/hoe.rb
 config/requirements.rb
 lib/cliaws.rb

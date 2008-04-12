@@ -18,14 +18,14 @@ A command-line client for Amazon Web Services.
 
 Usage from the command line:
 
-  $ s3 list my_awesome_bucket/a_glob
-  $ s3 put my_awesome_bucket/a_key_name a_local_file
-  $ cat a_local_file | s3 put my_awesome_bucket/a_key_name
-  $ s3 put --data "this is the data" my_awesome_bucket/a_key_name
-  $ s3 get my_awesome_bucket/a_key_name
-  $ s3 head my_awesome_bucket/a_key_name
+  $ clis3 list my_awesome_bucket/a_glob
+  $ clis3 put my_awesome_bucket/a_key_name a_local_file
+  $ cat a_local_file | clis3 put my_awesome_bucket/a_key_name
+  $ clis3 put --data "this is the data" my_awesome_bucket/a_key_name
+  $ clis3 get my_awesome_bucket/a_key_name
+  $ clis3 head my_awesome_bucket/a_key_name
     # Returns a YAML representation of response and metadata headers
-  $ s3 rm my_awesome_bucket/a_key_name
+  $ clis3 rm my_awesome_bucket/a_key_name
 
 Cliaws may also be used from Ruby:
 
