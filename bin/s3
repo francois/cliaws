@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+#
+#  Created on 2008-4-12.
+#  Copyright (c) 2008. All rights reserved.
+
+begin
+  require 'rubygems'
+rescue LoadError
+  # no rubygems to load, so we fail silently
+end
+
+require "main"
+require "cliaws"
+
+Main {
+  argument("s3_object") do
+    required
+    argument_required
+  end
+
+  mode("list") do
+    def run
+      puts Cliaws.s3.list(params["s3_object"].value)
+    end
+  end
+
+  mode("touch") do
+    def run
+      Cliaws.s3.put("", params["s3_object"].value)
+    end
+  end
+
+  mode("put") do
+    argument("local_file") do
+      optional
+      argument_required
+    end
+
+    option("data") do
+      optional
+      argument_required
+    end
+
+    def run
+      if params["local_file"].given? && params["data"].given? then
+        abort "Cannot give both the --data and local_file parameters at the same time"
+      elsif !params["local_file"].given? && !params["data"].given? then
+        abort "Missing both local_file and --data: what should I push to S3 ?"
+      elsif params["local_file"].given? then
+        source = File.open(params["local_file"].value, "rb")
+      else
+        source = params["data"].value
+      end
+
+      Cliaws.s3.put(source, params["s3_object"].value)
+    end
+  end
+
+  mode("rm") do
+    def run
+      Cliaws.s3.rm(params["s3_object"].value)
+    end
+  end
+
+  mode("get") do
+    argument("local_file") do
+      argument_required
+      optional
+    end
+
+    def run
+      if params["local_file"].given? then
+        dest = File.open(params["local_file"].value, "wb")
+      else
+        dest = STDOUT
+      end
+
+      Cliaws.s3.get(params["s3_object"].value, dest)
+    end
+  end
+
+  mode("head") do
+    def run
+      Cliaws.s3.head(params["s3_object"].value)
+    end
+  end
+
+  def run
+    abort "Required action argument missing.  Run '#{$0} help' for details."
+  end
+}
