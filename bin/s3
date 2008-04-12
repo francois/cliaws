@@ -45,7 +45,7 @@ Main {
       if params["local_file"].given? && params["data"].given? then
         abort "Cannot give both the --data and local_file parameters at the same time"
       elsif !params["local_file"].given? && !params["data"].given? then
-        abort "Missing both local_file and --data: what should I push to S3 ?"
+        source = STDIN
       elsif params["local_file"].given? then
         source = File.open(params["local_file"].value, "rb")
       else
