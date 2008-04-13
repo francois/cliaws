@@ -65,6 +65,7 @@ Main {
   mode("cat") do
     def run
       Cliaws.s3.get(params["s3_object"].value, STDOUT)
+      puts
     end
   end
 

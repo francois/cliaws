@@ -24,7 +24,7 @@ Usage from the command line:
   $ clis3 put --data "this is the data" my_awesome_bucket/a_key_name
   $ clis3 get my_awesome_bucket/a_key_name a_local_file
   $ clis3 get my_awesome_bucket/a_key_name # Outputs to STDOUT
-  $ clis3 cat my_awesome_bucket/a_key_name # Outputs to STDOUT
+  $ clis3 cat my_awesome_bucket/a_key_name # Outputs to STDOUT, but adds an extra newline
   $ clis3 head my_awesome_bucket/a_key_name
     # Returns a YAML representation of response and metadata headers
   $ clis3 rm my_awesome_bucket/a_key_name
