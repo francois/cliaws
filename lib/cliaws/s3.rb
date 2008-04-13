@@ -19,6 +19,11 @@ module Cliaws
       dest.write(bucket.get(keyname))
     end
 
+    def cat(s3_object)
+      bucket, keyname = bucket_and_key_name(s3_object)
+      bucket.get(keyname)
+    end
+
     def head(s3_object)
       bucket, keyname = bucket_and_key_name(s3_object)
       key = bucket.key(keyname, true)
