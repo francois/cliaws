@@ -1,6 +1,7 @@
 $:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require "cliaws/s3"
+require "cliaws/sqs"
 
 module Cliaws
   def self.access_key_id
@@ -13,5 +14,9 @@ module Cliaws
 
   def self.s3
     @@s3 ||= Cliaws::S3.new(access_key_id, secret_access_key)
+  end
+
+  def self.sqs
+    @@sqs ||= Cliaws::Sqs.new(access_key_id, secret_access_key)
   end
 end

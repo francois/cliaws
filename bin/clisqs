@@ -9,36 +9,87 @@ rescue LoadError
   # no rubygems to load, so we fail silently
 end
 
-require 'optparse'
+require "main"
+require "cliaws"
 
-# NOTE: the option -p/--path= is given as an example, and should probably be replaced in your application.
-
-OPTIONS = {
-  :path     => '~'
-}
-MANDATORY_OPTIONS = %w(  )
-
-parser = OptionParser.new do |opts|
-  opts.banner = <<BANNER
-This application is wonderful because...
-
-Usage: #{File.basename($0)} [options]
-
-Options are:
-BANNER
-  opts.separator ""
-  opts.on("-p", "--path=PATH", String,
-          "The root path for selecting files",
-          "Default: ~") { |OPTIONS[:path]| }
-  opts.on("-h", "--help",
-          "Show this help message.") { puts opts; exit }
-  opts.parse!(ARGV)
-
-  if MANDATORY_OPTIONS && MANDATORY_OPTIONS.find { |option| OPTIONS[option.to_sym].nil? }
-    puts opts; exit
+Main {
+  mixin(:qname) do
+    argument("queue_name") do
+      required
+      argument_required
+    end
   end
-end
 
-path = OPTIONS[:path]
+  mode("create") do
+    mixin :qname
+    description "Create a new queue"
+    def run
+      Cliaws.sqs.create(queue_name)
+      puts "Queue #{queue_name} was created."
+    end
+  end
 
-# do stuff
+  mode("delete") do
+    mixin :qname
+    description "Deletes a queue"
+    option("force") { cast :boolean; default false }
+    def run
+      Cliaws.sqs.delete(queue_name, params["force"].value)
+      puts "Queue #{queue_name} was deleted."
+    end
+  end
+
+  mode("list") do
+    description "Lists the available queues"
+    def run
+      puts Cliaws.sqs.list
+    end
+  end
+
+  mode("size") do
+    mixin :qname
+    description "Prints the queue's size."
+    def run
+      puts Cliaws.sqs.size(queue_name)
+    end
+  end
+
+  mode("receive") do
+    mixin :qname
+    description "Receive (but keep) a message from the named queue."
+    def run
+      puts Cliaws.sqs.receive(queue_name)
+    end
+  end
+
+  mode("pop") do
+    mixin :qname
+    description "Retrieve and delete a message from the named queue."
+    def run
+      puts Cliaws.sqs.pop(queue_name)
+    end
+  end
+
+  mode("send") do
+    mixin :qname
+    option("data") { optional; argument_required }
+    argument("data_file") { optional; argument_required }
+    description "Sends data from --data, data_file or STDIN to the named queue."
+    def run
+      data = case
+             when params["data"].given?
+               params["data"].value
+             when params["data_file"].given?
+               File.read(params["data_file"].value)
+             else
+               STDIN.read
+             end
+      Cliaws.sqs.send(queue_name, data)
+      puts "Pushed #{data.size} bytes to queue #{queue_name}"
+    end
+  end
+
+  def queue_name
+    params["queue_name"].value
+  end
+}
