@@ -13,7 +13,7 @@ module Cliaws
     end
 
     # Adds a message in the queue.
-    def send(qname, data)
+    def push(qname, data)
       q(qname).push(data)
     end
 

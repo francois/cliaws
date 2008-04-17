@@ -70,11 +70,11 @@ Main {
     end
   end
 
-  mode("send") do
+  mode("push") do
     mixin :qname
     option("data") { optional; argument_required }
     argument("data_file") { optional; argument_required }
-    description "Sends data from --data, data_file or STDIN to the named queue."
+    description "Pushes (sends) data from --data, data_file or STDIN to the named queue."
     def run
       data = case
              when params["data"].given?
@@ -84,7 +84,7 @@ Main {
              else
                STDIN.read
              end
-      Cliaws.sqs.send(queue_name, data)
+      Cliaws.sqs.push(queue_name, data)
       puts "Pushed #{data.size} bytes to queue #{queue_name}"
     end
   end
