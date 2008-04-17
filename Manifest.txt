@@ -5,10 +5,12 @@ Manifest.txt
 README.txt
 Rakefile
 bin/clis3
+bin/clisqs
 config/hoe.rb
 config/requirements.rb
 lib/cliaws.rb
 lib/cliaws/s3.rb
+lib/cliaws/sqs.rb
 lib/cliaws/version.rb
 log/.gitignore
 script/console
