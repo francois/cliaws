@@ -14,14 +14,13 @@ module Cliaws
       bucket.keys(options).map(&:full_name)
     end
 
-    def get(s3_object, dest)
+    def get(s3_object, dest=nil)
       bucket, keyname = bucket_and_key_name(s3_object)
-      dest.write(bucket.get(keyname))
-    end
-
-    def cat(s3_object)
-      bucket, keyname = bucket_and_key_name(s3_object)
-      bucket.get(keyname)
+      if dest.nil? then
+        bucket.get(keyname)
+      else
+        dest.write(bucket.get(keyname))
+      end
     end
 
     def head(s3_object)
