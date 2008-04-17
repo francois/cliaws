@@ -1,3 +1,8 @@
+== 1.1.0 2008-04-17
+
+* Implemented sqs command-line client.
+* Cliaws::S3#get either returns the data, or writes the data to it's +dest+ parameter.
+
 == 1.0.0 2008-04-12
 
 * Implemented s3 command-line client.
