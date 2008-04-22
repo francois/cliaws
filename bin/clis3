@@ -18,6 +18,12 @@ Main {
     argument_required
   end
 
+  mode("url") do
+    def run
+      puts Cliaws.s3.url(params["s3_object"].value)
+    end
+  end
+
   mode("list") do
     def run
       puts Cliaws.s3.list(params["s3_object"].value)

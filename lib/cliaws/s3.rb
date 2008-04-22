@@ -3,8 +3,17 @@ require "activesupport"
 
 module Cliaws
   class S3
+    attr_reader :access_key_id, :secret_access_key
+    protected :access_key_id, :secret_access_key
+
     def initialize(access_key_id, secret_access_key)
-      @s3 = RightAws::S3.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
+      @access_key_id, @secret_access_key = access_key_id, secret_access_key
+    end
+
+    def url(full_name)
+      bucket_name, path = full_name.split("/", 2)
+      bucket = s3g.bucket(bucket_name, false)
+      bucket.get(path)
     end
 
     def list(glob)
@@ -43,8 +52,16 @@ module Cliaws
     protected
     def bucket_and_key_name(full_name)
       bucket_name, path = full_name.split("/", 2)
-      bucket = @s3.bucket(bucket_name, false)
+      bucket = s3.bucket(bucket_name, false)
       [bucket, path]
+    end
+
+    def s3
+      @s3 ||= RightAws::S3.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
+    end
+
+    def s3g
+      @s3i ||= RightAws::S3Generator.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
     end
   end
 end
