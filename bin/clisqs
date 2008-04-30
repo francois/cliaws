@@ -89,6 +89,15 @@ Main {
     end
   end
 
+  mode("info") do
+    mixin :qname
+    def run
+      info = Cliaws.sqs.info(queue_name)
+      puts "Visibility: #{info[:visibility_timeout]}"
+      puts "Number of messages: #{info[:size]}"
+    end
+  end
+
   def queue_name
     params["queue_name"].value
   end

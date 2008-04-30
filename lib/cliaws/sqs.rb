@@ -42,6 +42,12 @@ module Cliaws
       q(qname).delete(force)
     end
 
+    # Retrieves information about a queue
+    def info(qname)
+      queue = q(qname)
+      { :visibility_timeout => queue.visibility, :size => queue.size }
+    end
+
     protected
     def q(qname, create=false)
       @sqs.queue(qname, create)
