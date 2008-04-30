@@ -22,6 +22,11 @@ module Cliaws
       q(qname).pop.to_s
     end
 
+    # Fetches a number of messages.
+    def fetch(qname, size)
+      q(qname).receive_messages(size)
+    end
+
     # Returns the size of the queue.
     def size(qname)
       q(qname).size
