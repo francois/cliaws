@@ -1,3 +1,8 @@
+== 1.1.2 2008-04-30
+
+* New clisqs info.
+* New internal method for fetching multiple messages in one swoop in Cliaws::Sqs.
+
 == 1.1.1 2008-04-17
 
 * Renamed send to push for clisqs.
