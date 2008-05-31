@@ -10,6 +10,8 @@ rescue LoadError
 end
 
 require "main"
+
+$:.unshift File.dirname(__FILE__) + "/../lib"
 require "cliaws"
 
 Main {
