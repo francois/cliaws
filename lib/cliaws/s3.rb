@@ -53,6 +53,7 @@ module Cliaws
     def bucket_and_key_name(full_name)
       bucket_name, path = full_name.split("/", 2)
       bucket = s3.bucket(bucket_name, false)
+      raise UnknownBucket.new(bucket_name) unless bucket
       [bucket, path]
     end
 
@@ -62,6 +63,15 @@ module Cliaws
 
     def s3g
       @s3i ||= RightAws::S3Generator.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
+    end
+
+    class UnknownBucket < ArgumentError
+      attr_reader :bucket_name
+
+      def initialize(bucket_name)
+        super("Bucket #{bucket_name.inspect} could not be found")
+        @bucket_name = bucket_name
+      end
     end
   end
 end

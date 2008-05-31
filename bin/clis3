@@ -82,6 +82,9 @@ Main {
       end
 
       Cliaws.s3.put(source, params["local_files"].values.pop)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
