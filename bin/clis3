@@ -68,12 +68,14 @@ Main {
     end
 
     def run
+      source_name = nil
       if params["local_files"].given? && params["data"].given? then
         abort "Cannot give both the --data and local_files parameters at the same time"
       elsif !params["local_files"].given? && !params["data"].given? then
         source = STDIN
       elsif params["local_files"].given? && params["local_files"].values.length == 2 then
-        source = File.open(params["local_files"].values.shift, "rb")
+        source_name = params["local_files"].values.shift
+        source = File.open(source_name, "rb")
       elsif params["local_files"].given? then
         s3_object = params["local_files"].values.pop
         targets = params["local_files"].values.map {|filename| filename.to_s}
@@ -90,7 +92,13 @@ Main {
         source = params["data"].value
       end
 
-      Cliaws.s3.put(source, params["local_files"].values.pop)
+      s3_object = params["local_files"].values.pop
+      if s3_object =~ /\/$/ then
+        raise ArgumentError, "Target is a directory, but input is not a local file -- cannot proceed" if source_name.nil?
+        s3_object = File.join(s3_object, File.basename(source_name))
+      end
+
+      Cliaws.s3.put(source, s3_object)
 
     rescue Cliaws::S3::UnknownBucket
       abort "Could not find bucket named #{$!.bucket_name}"
