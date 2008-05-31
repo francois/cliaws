@@ -13,33 +13,42 @@ require "main"
 require "cliaws"
 
 Main {
-  argument("s3_object") do
-    required
-    argument_required
+  mixin :s3_object do
+    argument("s3_object") do
+      required
+      argument_required
+    end
   end
 
   mode("url") do
+    mixin :s3_object
+
     def run
       puts Cliaws.s3.url(params["s3_object"].value)
     end
   end
 
   mode("list") do
+    mixin :s3_object
+
     def run
       puts Cliaws.s3.list(params["s3_object"].value)
     end
   end
 
   mode("touch") do
+    mixin :s3_object
+
     def run
       Cliaws.s3.put("", params["s3_object"].value)
     end
   end
 
   mode("put") do
-    argument("local_file") do
+    argument("local_files") do
       optional
       argument_required
+      arity -2
     end
 
     option("data") do
@@ -48,27 +57,43 @@ Main {
     end
 
     def run
-      if params["local_file"].given? && params["data"].given? then
-        abort "Cannot give both the --data and local_file parameters at the same time"
-      elsif !params["local_file"].given? && !params["data"].given? then
+      if params["local_files"].given? && params["data"].given? then
+        abort "Cannot give both the --data and local_files parameters at the same time"
+      elsif !params["local_files"].given? && !params["data"].given? then
         source = STDIN
-      elsif params["local_file"].given? then
-        source = File.open(params["local_file"].value, "rb")
+      elsif params["local_files"].given? && params["local_files"].values.length == 2 then
+        source = File.open(params["local_files"].values.shift, "rb")
+      elsif params["local_files"].given? then
+        s3_object = params["local_files"].values.pop
+        targets = params["local_files"].values.map {|filename| filename.to_s}
+        targets.each do |local_file|
+          File.open(local_file, "rb") do |source|
+            remote_file = File.join(s3_object, File.basename(local_file))
+            puts "%-30s => %s" % [local_file, remote_file]
+            Cliaws.s3.put(source, remote_file)
+          end
+        end
+
+        exit 0
       else
         source = params["data"].value
       end
 
-      Cliaws.s3.put(source, params["s3_object"].value)
+      Cliaws.s3.put(source, params["local_files"].values.pop)
     end
   end
 
   mode("rm") do
+    mixin :s3_object
+
     def run
       Cliaws.s3.rm(params["s3_object"].value)
     end
   end
 
   mode("cat") do
+    mixin :s3_object
+
     def run
       Cliaws.s3.get(params["s3_object"].value, STDOUT)
       puts
@@ -76,6 +101,8 @@ Main {
   end
 
   mode("get") do
+    mixin :s3_object
+
     argument("local_file") do
       argument_required
       optional
@@ -93,6 +120,8 @@ Main {
   end
 
   mode("head") do
+    mixin :s3_object
+
     def run
       Cliaws.s3.head(params["s3_object"].value)
     end
