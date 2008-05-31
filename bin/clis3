@@ -27,6 +27,9 @@ Main {
 
     def run
       puts Cliaws.s3.url(params["s3_object"].value)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
@@ -35,6 +38,9 @@ Main {
 
     def run
       puts Cliaws.s3.list(params["s3_object"].value)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
@@ -43,6 +49,9 @@ Main {
 
     def run
       Cliaws.s3.put("", params["s3_object"].value)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
@@ -93,6 +102,9 @@ Main {
 
     def run
       Cliaws.s3.rm(params["s3_object"].value)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
@@ -102,6 +114,9 @@ Main {
     def run
       Cliaws.s3.get(params["s3_object"].value, STDOUT)
       puts
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
@@ -121,6 +136,9 @@ Main {
       end
 
       Cliaws.s3.get(params["s3_object"].value, dest)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
@@ -129,6 +147,9 @@ Main {
 
     def run
       Cliaws.s3.head(params["s3_object"].value)
+
+    rescue Cliaws::S3::UnknownBucket
+      abort "Could not find bucket named #{$!.bucket_name}"
     end
   end
 
