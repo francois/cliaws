@@ -1,3 +1,11 @@
+== 1.2.0 2008-05-30
+
+* clis3 url returns the authenticated URL to an s3 object
+* clisqs info subcommand
+* Cliaws::Sqs#fetch returns a number of messages in one call
+* clis3 put handles multiple arguments (put A B C bucket/dir)
+* clis3 handles unknown bucket names gracefully
+
 == 1.1.1 2008-04-17
 
 * Renamed send to push for clisqs.
