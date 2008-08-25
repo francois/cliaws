@@ -1,3 +1,5 @@
+== 1.2.2 2008-08-25
+
 * clis3 put was rewritten to work correctly with --data, stdin and multiple files.
 
 == 1.2.1 2008-05-30
