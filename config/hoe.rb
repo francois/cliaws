@@ -60,7 +60,7 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.extra_deps = [
     ["main", "~> 2.8"],
-    ["right_aws", "~> 1.7"],
+    ["right_aws", "~> 1.8"],
     ["activesupport", "~> 2.1"]
   ]
   
