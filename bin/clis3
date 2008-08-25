@@ -56,7 +56,7 @@ Main {
   end
 
   mode("put") do
-    argument("local_files") do
+    argument("files_or_s3_path") do
       optional
       argument_required
       arity -2
@@ -68,17 +68,17 @@ Main {
     end
 
     def run
-      source_name = nil
-      if params["local_files"].given? && params["data"].given? then
-        abort "Cannot give both the --data and local_files parameters at the same time"
-      elsif !params["local_files"].given? && !params["data"].given? then
+      paths = params["files_or_s3_path"].values
+      s3_object = paths.pop
+
+      if params["data"].given? && !paths.empty? then
+        raise ArgumentError, "Cannot specify both --data and filename(s) to send."
+      elsif params["data"].given? then
+        source = params["data"].value
+      elsif paths == ["-"] then
         source = STDIN
-      elsif params["local_files"].given? && params["local_files"].values.length == 2 then
-        source_name = params["local_files"].values.shift
-        source = File.open(source_name, "rb")
-      elsif params["local_files"].given? then
-        s3_object = params["local_files"].values.pop
-        targets = params["local_files"].values.map {|filename| filename.to_s}
+      else
+        targets = paths.map {|filename| filename.to_s}
         targets.each do |local_file|
           File.open(local_file, "rb") do |source|
             remote_file = File.join(s3_object, File.basename(local_file))
@@ -88,16 +88,9 @@ Main {
         end
 
         exit 0
-      else
-        source = params["data"].value
       end
 
-      s3_object = params["local_files"].values.pop
-      if s3_object =~ /\/$/ then
-        raise ArgumentError, "Target is a directory, but input is not a local file -- cannot proceed" if source_name.nil?
-        s3_object = File.join(s3_object, File.basename(source_name))
-      end
-
+      raise ArgumentError, "Target is a directory, but input is not a local file -- cannot proceed" if s3_object =~ /\/$/
       Cliaws.s3.put(source, s3_object)
 
     rescue Cliaws::S3::UnknownBucket
