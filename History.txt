@@ -1,3 +1,5 @@
+* clis3 put was rewritten to work correctly with --data, stdin and multiple files.
+
 == 1.2.1 2008-05-30
 
 * clis3 put A bucket/ will put to bucket/A, while clis3 put A bucket/B will
