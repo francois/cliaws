@@ -61,7 +61,7 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.extra_deps = [
     ["main", "~> 2.8"],
     ["right_aws", "~> 1.7"],
-    ["activesupport", "~> 2.0"]
+    ["activesupport", "~> 2.1"]
   ]
   
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
