@@ -95,9 +95,8 @@ Main {
               Cliaws.s3.put(source, remote_file)
             end
           end
+          exit 0
         end
-
-        exit 0
       end
 
       raise ArgumentError, "Target is a directory, but input is not a local file -- cannot proceed" if s3_object =~ /\/$/
