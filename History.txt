@@ -2,6 +2,8 @@
 
 * More testing for "clis3 put - S3_OBJECT" and "cat x | clis3 put S3_OBJECT" highlighted
   errors.  Fixed those so now it works for real.
+  WARNING:  "clis3 put - S3_OBJECT" is horribly broken: the stream's size is unknown and
+            reported as 0, and the Amazon servers faithfully create a 0 sized object...
 
 == 1.2.4 2008-09-15
 
