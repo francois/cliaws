@@ -80,10 +80,13 @@ Main {
       else
         targets = paths.map {|filename| filename.to_s}
         case targets.length
+        when 0
+          source = STDIN
         when 1
           File.open(targets.first, "rb") do |source|
             Cliaws.s3.put(source, s3_object)
           end
+          exit 0
         else
           targets.each do |local_file|
             File.open(local_file, "rb") do |source|
