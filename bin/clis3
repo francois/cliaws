@@ -79,11 +79,18 @@ Main {
         source = STDIN
       else
         targets = paths.map {|filename| filename.to_s}
-        targets.each do |local_file|
+        case targets.length
+        when 1
           File.open(local_file, "rb") do |source|
-            remote_file = File.join(s3_object, File.basename(local_file))
-            puts "%-30s => %s" % [local_file, remote_file]
-            Cliaws.s3.put(source, remote_file)
+            Cliaws.s3.put(source, s3_object)
+          end
+        else
+          targets.each do |local_file|
+            File.open(local_file, "rb") do |source|
+              remote_file = File.join(s3_object, File.basename(local_file))
+              puts "%-30s => %s" % [local_file, remote_file]
+              Cliaws.s3.put(source, remote_file)
+            end
           end
         end
 

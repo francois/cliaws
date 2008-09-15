@@ -1,3 +1,5 @@
+* clis3 put with one local argument was putting in a named folder on S3.
+
 == 1.2.2 2008-08-25
 
 * clis3 put was rewritten to work correctly with --data, stdin and multiple files.
