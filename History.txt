@@ -1,3 +1,12 @@
+== 1.2.5 2008-09-15
+
+* More testing for "clis3 put - S3_OBJECT" and "cat x | clis3 put S3_OBJECT" highlighted
+  errors.  Fixed those so now it works for real.
+
+== 1.2.4 2008-09-15
+
+* Released too soon - was missing some testing on clis3 put LOCAL REMOTE
+
 == 1.2.3 2008-09-15
 
 * clis3 put with one local argument was putting in a named folder on S3.
