@@ -81,7 +81,7 @@ Main {
         targets = paths.map {|filename| filename.to_s}
         case targets.length
         when 1
-          File.open(local_file, "rb") do |source|
+          File.open(targets.first, "rb") do |source|
             Cliaws.s3.put(source, s3_object)
           end
         else
