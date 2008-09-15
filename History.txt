@@ -1,3 +1,5 @@
+== 1.2.3 2008-09-15
+
 * clis3 put with one local argument was putting in a named folder on S3.
 
 == 1.2.2 2008-08-25
