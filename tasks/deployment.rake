@@ -2,7 +2,7 @@ desc 'Release the website and new gem version'
 task :deploy => [:check_version, :website, :release] do
   puts "Remember to create SVN tag:"
   puts "svn copy svn+ssh://#{rubyforge_username}@rubyforge.org/var/svn/#{PATH}/trunk " +
-    "svn+ssh://#{rubyforge_username}@rubyforge.org/var/svn/#{PATH}/tags/REL-#{VERS} "
+  "svn+ssh://#{rubyforge_username}@rubyforge.org/var/svn/#{PATH}/tags/REL-#{VERS} "
   puts "Suggested comment:"
   puts "Tagging release #{CHANGES}"
 end
@@ -29,6 +29,18 @@ end
 namespace :manifest do
   desc 'Recreate Manifest.txt to include ALL files'
   task :refresh do
-    `rake check_manifest | patch -p0 > Manifest.txt`
+    require "find"
+
+    home = File.expand_path(File.dirname(__FILE__) + "/../") + "/"
+    files = []
+    Find.find(File.dirname(__FILE__) + "/..") do |entry|
+      Find.prune if entry =~ /\.git$/
+      next if File.directory?(entry)
+      files << File.expand_path(entry).sub(home, "")
+    end
+
+    File.open(File.dirname(__FILE__) + "/../Manifest.txt", "w") do |io|
+      io.puts files.sort.join("\n")
+    end
   end
 end
