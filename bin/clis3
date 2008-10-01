@@ -71,36 +71,53 @@ Main {
       paths = params["files_or_s3_path"].values
       s3_object = paths.pop
 
+      single_put_mapper = lambda do |source, s3_path|
+        raise ArgumentError, "Writing directly from STDIN is forbidden when STDIN's size is unknown.  The RightAws library will write a zero-byte file to Amazon's servers." unless source.respond_to?(:lstat) || source.respond_to?(:size)
+        s3_path
+      end
+
+      multi_put_mapper  = lambda do |source, s3_path|
+        if source.respond_to?(:path) then
+          File.join(s3_path, File.basename(source.path))
+        else
+          raise ArgumentError, "Cannot write to a directory when one or more sources are not files: #{source.inspect}"
+        end
+      end
+
       if params["data"].given? && !paths.empty? then
         raise ArgumentError, "Cannot specify both --data and filename(s) to send."
       elsif params["data"].given? then
-        source = params["data"].value
+        sources = [StringIO.new(params["data"].value)]
+        mapper  = single_put_mapper
       elsif paths == ["-"] then
-        source = STDIN
+        sources = [STDIN]
+        mapper  = single_put_mapper
       else
         targets = paths.map {|filename| filename.to_s}
         case targets.length
         when 0
-          source = STDIN
+          sources = [STDIN]
+          mapper  = single_put_mapper
         when 1
-          File.open(targets.first, "rb") do |source|
-            Cliaws.s3.put(source, s3_object)
-          end
-          exit 0
+          sources = targets.map {|target| File.open(target, "rb")}
+          mapper  = single_put_mapper
         else
-          targets.each do |local_file|
-            File.open(local_file, "rb") do |source|
-              remote_file = File.join(s3_object, File.basename(local_file))
-              puts "%-30s => %s" % [local_file, remote_file]
-              Cliaws.s3.put(source, remote_file)
-            end
-          end
-          exit 0
+          sources = targets.map {|target| File.open(target, "rb")}
+          mapper  = multi_put_mapper
         end
       end
 
-      raise ArgumentError, "Target is a directory, but input is not a local file -- cannot proceed" if s3_object =~ /\/$/
-      Cliaws.s3.put(source, s3_object)
+      sources.each do |source|
+        target = mapper.call(source, s3_object)
+        if source.respond_to?(:path) then
+          puts "#{source.path} => #{target}"
+        else
+          puts "STDIN => #{target}"
+        end
+
+        Cliaws.s3.put(source, target)
+      end
+      exit_success!
 
     rescue Cliaws::S3::UnknownBucket
       abort "Could not find bucket named #{$!.bucket_name}"
