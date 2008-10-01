@@ -45,8 +45,8 @@ module Cliaws
       puts headers.merge(key.meta_headers).to_yaml
     end
 
-    def put(source, s3_object)
-      bucket, keyname = bucket_and_key_name(s3_object)
+    def put(source, s3_object, create=true)
+      bucket, keyname = bucket_and_key_name(s3_object, create)
       bucket.put(keyname, source)
     end
 
@@ -56,9 +56,9 @@ module Cliaws
     end
 
     protected
-    def bucket_and_key_name(full_name)
+    def bucket_and_key_name(full_name, create=true)
       bucket_name, path = full_name.split("/", 2)
-      bucket = s3.bucket(bucket_name, false)
+      bucket = s3.bucket(bucket_name, create)
       raise UnknownBucket.new(bucket_name) unless bucket
       [bucket, path]
     end
