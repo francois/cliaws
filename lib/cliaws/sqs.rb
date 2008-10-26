@@ -1,5 +1,4 @@
 require "right_aws"
-require "activesupport"
 
 module Cliaws
   class Sqs
@@ -34,7 +33,7 @@ module Cliaws
 
     # Lists the created queues.
     def list(prefix=nil)
-      @sqs.queues(prefix).map(&:name)
+      @sqs.queues(prefix).map {|q| q.name}
     end
 
     # Creates a queue

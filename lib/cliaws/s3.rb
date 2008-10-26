@@ -1,5 +1,4 @@
 require "right_aws"
-require "activesupport"
 
 # Load vendor code through RubyGems
 require "right_http_connection"
@@ -25,7 +24,7 @@ module Cliaws
     def list(glob)
       bucket, path = bucket_and_key_name(glob)
       options = Hash.new
-      options["prefix"] = path unless path.blank?
+      options["prefix"] = path unless path.nil? || path.empty?
       bucket.keys(options).map(&:full_name)
     end
 
