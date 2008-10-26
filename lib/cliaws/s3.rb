@@ -25,7 +25,7 @@ module Cliaws
       bucket, path = bucket_and_key_name(glob)
       options = Hash.new
       options["prefix"] = path unless path.nil? || path.empty?
-      bucket.keys(options).map(&:full_name)
+      bucket.keys(options).map {|b| b.full_name}
     end
 
     def get(s3_object, dest=nil)
