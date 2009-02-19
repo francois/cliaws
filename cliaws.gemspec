@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.date = %q{2008-10-26}
   s.description = %q{A command-line suite of tools to access Amazon Web Services, using the RightAws gems.}
   s.email = ["francois@teksol.info"]
-  s.executables = ["clis3", "clisqs"]
+  s.executables = ["clis3", "clisqs", "cliec2"]
   s.extra_rdoc_files = ["History.txt", "License.txt", "Manifest.txt", "README.txt", "vendor/right_http_connection-1.2.1/README.txt"]
   s.files = [".gitignore", "History.txt", "License.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/clis3", "bin/clisqs", "config/hoe.rb", "config/requirements.rb", "lib/cliaws.rb", "lib/cliaws/s3.rb", "lib/cliaws/sqs.rb", "lib/cliaws/version.rb", "log/.gitignore", "script/console", "script/destroy", "script/generate", "script/txt2html", "setup.rb", "tasks/deployment.rake", "tasks/environment.rake", "test/test_cliaws.rb", "test/test_helper.rb", "vendor/right_http_connection-1.2.1/README.txt", "vendor/right_http_connection-1.2.1/lib/right_http_connection.rb"]
   s.has_rdoc = true
