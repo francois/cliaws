@@ -18,6 +18,10 @@ module Cliaws
         @raw_data = raw_data
       end
 
+      def running?
+        @raw_data[:aws_state] == "running"
+      end
+
       def instance_id
         @raw_data[:aws_instance_id]
       end
