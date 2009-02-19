@@ -9,36 +9,21 @@ rescue LoadError
   # no rubygems to load, so we fail silently
 end
 
-require 'optparse'
+require "main"
 
-# NOTE: the option -p/--path= is given as an example, and should probably be replaced in your application.
+$:.unshift File.dirname(__FILE__) + "/../lib"
+require "cliaws"
 
-OPTIONS = {
-  :path     => '~'
-}
-MANDATORY_OPTIONS = %w(  )
-
-parser = OptionParser.new do |opts|
-  opts.banner = <<BANNER
-This application is wonderful because...
-
-Usage: #{File.basename($0)} [options]
-
-Options are:
-BANNER
-  opts.separator ""
-  opts.on("-p", "--path=PATH", String,
-          "The root path for selecting files",
-          "Default: ~") { |OPTIONS[:path]| }
-  opts.on("-h", "--help",
-          "Show this help message.") { puts opts; exit }
-  opts.parse!(ARGV)
-
-  if MANDATORY_OPTIONS && MANDATORY_OPTIONS.find { |option| OPTIONS[option.to_sym].nil? }
-    puts opts; exit
+Main {
+  mode("list") do
+    def run
+      instances = Cliaws.ec2.list
+      printf "%-50s %-12s %s\n", "DNS Name", "State", "Groups"
+      printf "-"*120
+      print "\n"
+      instances.each do |instance|
+        printf "%-50s %-12s %s\n", instance.public_dns_name, instance.state, instance.groups.join(", ")
+      end
+    end
   end
-end
-
-path = OPTIONS[:path]
-
-# do stuff
+}
