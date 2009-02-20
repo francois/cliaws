@@ -4,11 +4,14 @@ License.txt
 Manifest.txt
 README.txt
 Rakefile
+bin/cliec2
 bin/clis3
 bin/clisqs
+cliaws.gemspec
 config/hoe.rb
 config/requirements.rb
 lib/cliaws.rb
+lib/cliaws/ec2.rb
 lib/cliaws/s3.rb
 lib/cliaws/sqs.rb
 lib/cliaws/version.rb
