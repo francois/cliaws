@@ -12,7 +12,7 @@ begin
     gemspec.extra_rdoc_files  = %w(History.txt License.txt vendor/right_http_connection-1.2.1/README.txt)
 
     gemspec.add_dependency "thor", "~> 0.9"
-    gemspec.add_dependency "right_aws", "~> 1.8"
+    gemspec.add_dependency "right_aws", "~> 1.10"
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
