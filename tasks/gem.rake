@@ -8,6 +8,8 @@ begin
     gemspec.summary           = "A command-line suite of tools to access Amazon Web Services, using the RightAws gems."
     gemspec.description       = gemspec.summary
     gemspec.authors           = ["François Beausoleil"]
+    gemspec.executables       = %w(clis3 clisqs cliec2)
+    gemspec.extra_rdoc_files  = %w(History.txt License.txt vendor/right_http_connection-1.2.1/README.txt)
 
     gemspec.add_dependency "main", "~> 2.8"
     gemspec.add_dependency "right_aws", "~> 1.8"
