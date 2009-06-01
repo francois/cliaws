@@ -43,3 +43,8 @@ begin
 rescue LoadError
   puts "Rake SshDirPublisher is unavailable or your rubyforge environment is not configured."
 end
+
+task :rdoc do
+	rm_r "doc"
+  sh "rdoc --title 'Cliaws: Ruby command-line AWS client' --exclude=doc/"
+end
