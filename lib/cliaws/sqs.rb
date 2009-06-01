@@ -3,7 +3,7 @@ require "right_aws"
 module Cliaws
   class Sqs
     def initialize(access_key_id, secret_access_key)
-      @sqs = RightAws::Sqs.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
+      @sqs = RightAws::SqsGen2.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
     end
 
     # Gets a message from the queue, but doesn't delete it.
