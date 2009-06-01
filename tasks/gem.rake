@@ -1,3 +1,5 @@
+require "cliaws/version"
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
@@ -9,9 +11,9 @@ begin
     gemspec.summary           = "A command-line suite of tools to access Amazon Web Services, using the RightAws gems."
     gemspec.description       = gemspec.summary
     gemspec.authors           = ["François Beausoleil"]
-    gemspec.dependencies      = [
-      ["main", "~> 2.8"],
-      ["right_aws", "~> 1.8"]]
+
+    gemspec.add_dependency "main", "~> 2.8"
+    gemspec.add_dependency "right_aws", "~> 1.8"
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
