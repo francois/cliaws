@@ -1,3 +1,6 @@
+require "thor"
+require "cliaws"
+
 module Cliaws
 	module Cli
 		class S3 < Thor
