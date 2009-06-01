@@ -1,11 +1,5 @@
 require "right_aws"
 
-# Load vendor code through RubyGems
-require "right_http_connection"
-
-# Then patch it here
-require File.dirname(__FILE__) + "/../../vendor/right_http_connection-1.2.1/lib/right_http_connection"
-
 module Cliaws
   class S3
     attr_reader :access_key_id, :secret_access_key
