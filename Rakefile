@@ -33,8 +33,8 @@ begin
         )
 
         host = "#{config['username']}@rubyforge.org"
-        remote_dir = "/var/www/gforge-projects/the-perfect-gem/"
-        local_dir = 'rdoc'
+        remote_dir = "/var/www/gforge-projects/cliaws/"
+        local_dir = 'doc'
 
         Rake::SshDirPublisher.new(host, remote_dir, local_dir).upload
       end
@@ -45,6 +45,6 @@ rescue LoadError
 end
 
 task :rdoc do
-	rm_r "doc"
+  rm_r "doc"
   sh "rdoc --title 'Cliaws: Ruby command-line AWS client' --exclude=doc/"
 end
