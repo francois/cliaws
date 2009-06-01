@@ -42,7 +42,6 @@ Cliaws may also be used from Ruby:
 == REQUIREMENTS:
 
 * main
-* activesupport
 * right_aws
 
 == INSTALL:
