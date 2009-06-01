@@ -41,7 +41,7 @@ module Cliaws
       bucket, keyname = bucket_and_key_name(s3_object)
       key = bucket.key(keyname, true)
       headers = key.headers
-      puts headers.merge(key.meta_headers).to_yaml
+      headers.merge(key.meta_headers)
     end
 
     def put(source, s3_object, create=true)
