@@ -1,11 +1,8 @@
-require "cliaws/version"
-
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name              = "cliaws"
     gemspec.rubyforge_project = gemspec.name
-    gemspec.version           = Cliaws::VERSION::STRING
     gemspec.email             = "francois@teksol.info"
     gemspec.homepage          = "http://cliaws.rubyforge.org/"
     gemspec.summary           = "A command-line suite of tools to access Amazon Web Services, using the RightAws gems."
