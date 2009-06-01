@@ -14,7 +14,7 @@ module Cliaws
       end
 
       desc "delete QUEUE_NAME", "Deletes the named queue."
-      method_options :force => false
+      method_options :force => :boolean
       def delete(queue_name)
         Cliaws.sqs.delete(queue_name, options[:force])
         puts "Queue #{queue_name} deleted"
