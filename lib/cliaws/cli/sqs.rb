@@ -5,7 +5,7 @@ module Cliaws
   module Cli
     class Sqs < Thor
       map  %w(-h --help -H) => :help
-      map :peek => :receive
+      map "peek" => :receive
 
       desc "create QUEUE_NAME", "Creates a new queue with the specified name."
       def create(queue_name)
@@ -22,7 +22,7 @@ module Cliaws
 
       desc "list [PREFIX]", "Lists your queues, only if they match PREFIX."
       def list(prefix=nil)
-        Cliaws.sqs.list(prefix)
+        puts Cliaws.sqs.list(prefix).map {|q| q.name}
       end
 
       desc "size QUEUE_NAME", "Prints the number of items in the queue to STDOUT."
@@ -32,12 +32,14 @@ module Cliaws
 
       desc "receive QUEUE_NAME", "Prints a message from the queue to STDOUT.  This is also known as peeking."
       def receive(queue_name)
-        puts Cliaws.sqs.receive(queue_name)
+        message = Cliaws.sqs.receive(queue_name)
+        puts message if message
       end
 
       desc "pop QUEUE_NAME", "Prints a message from the queue to STDOUT, and removes it from the queue."
       def pop(queue_name)
-        puts Cliaws.sqs.pop(queue_name)
+        message = Cliaws.sqs.pop(queue_name)
+        puts message if message
       end
 
       desc "push QUEUE_NAME [LOCAL_FILE]", <<EOD

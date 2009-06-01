@@ -8,7 +8,7 @@ module Cliaws
 
     # Gets a message from the queue, but doesn't delete it.
     def receive(qname)
-      q(qname).receive(qname).to_s
+      q(qname).receive
     end
 
     # Adds a message in the queue.
@@ -18,7 +18,7 @@ module Cliaws
 
     # Gets and deletes message.
     def pop(qname)
-      q(qname).pop.to_s
+      q(qname).pop
     end
 
     # Fetches a number of messages.
@@ -33,7 +33,7 @@ module Cliaws
 
     # Lists the created queues.
     def list(prefix=nil)
-      @sqs.queues(prefix).map {|q| q.name}
+      @sqs.queues(prefix)
     end
 
     # Creates a queue
