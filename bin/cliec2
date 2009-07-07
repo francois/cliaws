@@ -18,12 +18,116 @@ Main {
   mode("list") do
     def run
       instances = Cliaws.ec2.list
-      printf "%-50s %-12s %s\n", "DNS Name", "State", "Groups"
+      printf "%-10s %-50s %-12s %s\n", "ID", "DNS Name", "State", "Groups"
       printf "-"*120
       print "\n"
       instances.each do |instance|
-        printf "%-50s %-12s %s\n", instance.public_dns_name, instance.state, instance.groups.join(", ")
+        printf "%-10s %-50s %-12s %s\n", instance.instance_id, instance.public_dns_name, instance.state, instance.groups.join(", ")
       end
+    end
+  end
+
+  mode("run") do
+    argument("AMI") do
+      required
+      argument_required
+    end
+
+    option("count") do
+      optional
+      default "1"
+      argument_required
+    end
+
+    option("type") do
+      optional
+      default "m1.small"
+      argument_required
+    end
+
+    option("keypair") do
+      required
+      argument_required
+    end
+
+    option("group") do
+      arity -1
+      default "default"
+      argument_required
+    end
+
+    def run
+      instances = Cliaws.ec2.run(params["AMI"].value, :type => params["type"].value, :count => params["count"].value, :keypair => params["keypair"].value, :groups => params["group"].values)
+      result = {"Started" => instances.map {|i| i.instance_id}}
+      puts result.to_yaml
+    end
+  end
+
+  mode("terminate") do
+    argument("instance_id") do
+      required
+      arity -2
+      argument_required
+    end
+
+    def run
+      instances = Cliaws.ec2.terminate(params["instance_id"].values)
+      result = {"Terminating" => instances.map {|i| i.instance_id}}
+      puts result.to_yaml
+    end
+  end
+
+  mode("allocate-address") do
+    def run
+      address = Cliaws.ec2.allocate_address
+      puts "Allocated: #{address}"
+    end
+  end
+
+  mode("deallocate-address") do
+    argument("address") do
+      required
+      argument_required
+    end
+
+    def run
+      Cliaws.ec2.deallocate_address(params["address"].value)
+      puts "Deallocated: #{params["address"].value}"
+    end
+  end
+
+  mode("associate-address") do
+    option("address") do
+      required
+      argument_required
+    end
+
+    option("instance") do
+      required
+      argument_required
+    end
+
+    def run
+      Cliaws.ec2.associate_address(:address => params["address"].value, :instance => params["instance"].value)
+      puts "Associated:\n  #{params["instance"].value}: #{params["address"].value.inspect}"
+    end
+  end
+
+  mode("disassociate-address") do
+    argument("address") do
+      required
+      argument_required
+    end
+
+    def run
+      Cliaws.ec2.disassociate_address(params["address"].value)
+      puts "Disassociated: #{params["address"].value}"
+    end
+  end
+
+  mode("describe-addresses") do
+    def run
+      puts Cliaws.ec2.describe_addresses.to_yaml
     end
   end
 }

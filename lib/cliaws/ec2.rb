@@ -13,6 +13,42 @@ module Cliaws
       ec2.describe_instances.map {|raw_data| Instance.new(raw_data)}
     end
 
+    def run(ami, options={})
+      raw_data = ec2.launch_instances(ami,
+                           :min_count     => options[:count],
+                           :max_count     => options[:count],
+                           :key_name      => options[:keypair],
+                           :instance_type => options[:type])
+      raw_data.map {|data| Instance.new(data)}
+    end
+
+    def terminate(instance_ids)
+      raw_data = ec2.terminate_instances(instance_ids)
+      raw_data.map {|data| Instance.new(data)}
+    end
+
+    def allocate_address
+      ec2.allocate_address
+    end
+
+    def deallocate_address(address)
+      ec2.release_address(address)
+    end
+
+    def associate_address(options)
+      ec2.associate_address(options[:instance], options[:address])
+    end
+
+    def disassociate_address(address)
+      ec2.disassociate_address(address)
+    end
+
+    def describe_addresses
+      ec2.describe_addresses.inject([]) do |memo, hash|
+        memo << {"instance_id" => hash[:instance_id], "address" => hash[:public_ip]}
+      end
+    end
+
     class Instance
       def initialize(raw_data)
         @raw_data = raw_data
