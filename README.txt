@@ -29,6 +29,9 @@ Usage from the command line:
     # Returns a YAML representation of response and metadata headers
   $ clis3 rm my_awesome_bucket/a_key_name
 
+	$ cliec2 launch AMI --keypair KEYPAIR
+	$ cliec2 list
+
 Cliaws may also be used from Ruby:
 
   Cliaws.s3.list("my_awesome_bucket/a_glob") # Returns an array of names
@@ -39,10 +42,12 @@ Cliaws may also be used from Ruby:
   Cliaws.s3.head("my_awesome_bucket/a_key_name")
   Cliaws.s3.rm("my_awesome_bucket/a_key_name")
 
+	Cliaws.ec2.run("AMI", :keypair => "KEYPAIR")
+	Cliaws.ec2.list
+
 == REQUIREMENTS:
 
-* main
-* right_aws
+* thor
 
 == INSTALL:
 
@@ -52,7 +57,7 @@ Cliaws may also be used from Ruby:
 
 (The MIT License)
 
-Copyright (c) 2008 François Beausoleil (francois@teksol.info)
+Copyright (c) 2008-2009 François Beausoleil (francois@teksol.info)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
