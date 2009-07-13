@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cliaws}
-  s.version = "1.5.1"
+  s.version = "1.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Fran\303\247ois Beausoleil"]
-  s.date = %q{2009-07-07}
+  s.date = %q{2009-07-13}
   s.description = %q{A command-line suite of tools to access Amazon Web Services, using the RightAws gems.}
   s.email = %q{francois@teksol.info}
   s.executables = ["clis3", "clisqs", "cliec2"]
