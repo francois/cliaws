@@ -48,10 +48,14 @@ module Cliaws
       bucket.key(keyname).delete
     end
 
+    def bucket(name, create=false)
+      s3.bucket(name, create)
+    end
+
     protected
     def bucket_and_key_name(full_name, create=true)
       bucket_name, path = full_name.split("/", 2)
-      bucket = s3.bucket(bucket_name, create)
+      bucket = bucket(bucket_name, create)
       raise UnknownBucket.new(bucket_name) unless bucket
       [bucket, path]
     end
