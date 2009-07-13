@@ -52,12 +52,49 @@ module Cliaws
       s3.bucket(name, create)
     end
 
+    # +permissions+ is a Hash of ID|EMAIL|URL to permissions.
+    # Cliaws.s3.revoke("my_awesome_bucket/some/key", "francois@teksol.info" => %w(read write))
+    # Cliaws.s3.revoke("my_awesome_bucket/some/key", "francois@teksol.info" => %w()) # Drops all grants for the user
+    def revoke(name, permissions)
+      bucket, thing = bucket_and_thing(name)
+      permissions.each do |subject, perms|
+        grantee = RightAws::S3::Grantee.new(thing, subject, perms.map {|perm| perm.upcase}, :refresh)
+        if perms.empty? then
+          grantee.drop
+        else
+          grantee.revoke(*permissions)
+          grantee.apply
+        end
+      end
+    end
+
+    # +permissions+ is a Hash of ID|EMAIL|URL to permissions.
+    # Cliaws.s3.grant("my_awesome_bucket/some/key", "francois@teksol.info" => %w(read write))
+    def grant(name, permissions)
+      bucket, thing = bucket_and_thing(name)
+      permissions.each do |subject, perms|
+        RightAws::S3::Grantee.new(thing, subject, perms.map {|perm| perm.upcase}, :apply)
+      end
+    end
+
+    def grants(name)
+      bucket, thing = bucket_and_thing(name)
+      _, grantees = RightAws::S3::Grantee.owner_and_grantees(thing)
+      grantees
+    end
+
     protected
     def bucket_and_key_name(full_name, create=true)
       bucket_name, path = full_name.split("/", 2)
       bucket = bucket(bucket_name, create)
       raise UnknownBucket.new(bucket_name) unless bucket
       [bucket, path]
+    end
+
+    def bucket_and_thing(name)
+      bucket, keyname = bucket_and_key_name(name)
+      thing = keyname.nil? ? bucket : bucket.key(keyname)
+      [bucket, thing]
     end
 
     def s3

@@ -167,6 +167,62 @@ EOD
 			rescue Cliaws::S3::UnknownBucket
 				abort "Could not find bucket named #{$!.bucket_name}"
 			end
+
+      desc "grants BUCKET|KEY", <<EOD
+Returns a YAML representation of grants assigned to a bucket or key.
+EOD
+      def grants(thing)
+        result = Cliaws.s3.grants(thing).inject(Hash.new) do |memo, grant|
+          memo[grant.to_s] = grant.perms
+          memo
+        end
+
+        result = {thing => result}.to_yaml
+        puts result
+      end
+
+      desc "grant BUCKET|KEY (ID|EMAIL|AllUsers|AuthenticatedUsers) PERMISSION [PERMISSION...]", <<EOD
+Grants one or more permissions to a user or group.  Returns the new permissions on the bucket or key as YAML.
+
+Examples
+cliec2 grant my_awesome_bucket/some/key AllUsers READ
+cliec2 grant my_private_bucket friend@somewhere.com full-control
+cliec2 grant movies a9a7b886d6fd24a52fe8ca5bef65f89a64e0193f23000e241bf9b1c61be666e9 read WRITE
+EOD
+      def grant(thing, who, *permissions)
+        who = case who
+              when /^AllUsers$/i
+                "http://acs.amazonaws.com/groups/global/AllUsers"
+              when /^AuthenticatedUsers$/i
+                "http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+              else
+                who
+              end
+        Cliaws.s3.grant(thing, who => permissions.map {|perm| perm.gsub('_', '-')})
+        grants(thing)
+      end
+
+      desc "revoke BUCKET|KEY (ID|EMAIL|AllUsers|AuthenticatedUsers) [PERMISSION [PERMISSION...]]", <<EOD
+Revokes one or more permissions to a user or group.  If no permissions are given, all grants are dropped.  Returns the new permissions on the bucket or key as YAML.
+
+Examples
+cliec2 revoke my_awesome_bucket/some/key AllUsers
+cliec2 revoke my_awesome_bucket/some/key AllUsers READ
+cliec2 revoke my_private_bucket friend@somewhere.com full-control
+cliec2 revoke movies a9a7b886d6fd24a52fe8ca5bef65f89a64e0193f23000e241bf9b1c61be666e9 read WRITE
+EOD
+      def revoke(thing, who, *permissions)
+        who = case who
+              when /^AllUsers$/i
+                "http://acs.amazonaws.com/groups/global/AllUsers"
+              when /^AuthenticatedUsers$/i
+                "http://acs.amazonaws.com/groups/global/AuthenticatedUsers"
+              else
+                who
+              end
+        Cliaws.s3.grant(thing, who => permissions.map {|perm| perm.gsub('_', '-')})
+        grants(thing)
+      end
 		end
 	end
 end
