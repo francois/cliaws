@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cliaws}
-  s.version = "1.6.0"
+  s.version = "1.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Fran\303\247ois Beausoleil"]
