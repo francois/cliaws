@@ -6,6 +6,13 @@ module Cliaws
 		class S3 < Thor
 			map ["-h", "--help"] => :help
 
+      desc "buckets", <<EOD
+Returns a list of bucket names.
+EOD
+      def buckets
+        puts Cliaws.s3.buckets.map {|bucket| bucket.name}
+      end
+
       desc "create BUCKET", <<EOD
 Creates a new bucket.  If the bucket already exists, this command returns 1.
 EOD

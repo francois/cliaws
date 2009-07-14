@@ -52,6 +52,10 @@ module Cliaws
       s3.bucket(name, create)
     end
 
+    def buckets
+      s3.buckets
+    end
+
     # +permissions+ is a Hash of ID|EMAIL|URL to permissions.
     # Cliaws.s3.revoke("my_awesome_bucket/some/key", "francois@teksol.info" => %w(read write))
     # Cliaws.s3.revoke("my_awesome_bucket/some/key", "francois@teksol.info" => %w()) # Drops all grants for the user
