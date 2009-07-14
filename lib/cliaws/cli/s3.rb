@@ -6,6 +6,25 @@ module Cliaws
 		class S3 < Thor
 			map ["-h", "--help"] => :help
 
+      desc "create BUCKET", <<EOD
+Creates a new bucket.  If the bucket already exists, this command returns 1.
+EOD
+      def create(name)
+        Cliaws.s3.bucket(name, true)
+      end
+
+      desc "delete BUCKET", <<EOD
+Deletes the named bucket.  Will only delete the bucket if it is empty, unless --force.
+Returns 1 if the bucket did not exist.
+Returns 0 if the bucket existed and was deleted.
+EOD
+      method_options :force => false
+      def delete(name)
+        bucket = Cliaws.s3.bucket(name, false)
+        exit 1 if bucket.nil?
+        bucket.delete(options[:force])
+      end
+
 			desc "url S3_OBJECT_PATH", <<EOD
 Returns a signed, private, URL to the given S3 object that is valid for 24 hours.
 EOD
