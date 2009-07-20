@@ -96,13 +96,17 @@ module Cliaws
     end
 
     def bucket_and_thing(name)
-      bucket, keyname = bucket_and_key_name(name)
+      bucket, keyname = bucket_and_key_name(name, false)
       thing = keyname.nil? ? bucket : bucket.key(keyname)
       [bucket, thing]
     end
 
     def s3
-      @s3 ||= RightAws::S3.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
+      @s3 ||= begin
+                logger = Logger.new(STDOUT)
+                logger.level = Logger::DEBUG
+                RightAws::S3.new(access_key_id, secret_access_key, :logger => logger)
+              end
     end
 
     def s3g
