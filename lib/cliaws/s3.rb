@@ -103,8 +103,8 @@ module Cliaws
 
     def s3
       @s3 ||= begin
-                logger = Logger.new(STDOUT)
-                logger.level = Logger::DEBUG
+                logger = Logger.new(STDERR)
+                logger.level = Logger::WARN
                 RightAws::S3.new(access_key_id, secret_access_key, :logger => logger)
               end
     end

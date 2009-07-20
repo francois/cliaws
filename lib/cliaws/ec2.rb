@@ -83,7 +83,11 @@ module Cliaws
 
     protected
     def ec2
-      @ec2 ||= RightAws::Ec2.new(access_key_id, secret_access_key, :logger => Logger.new("/dev/null"))
+      @ec2 ||= begin
+                 logger = Logger.new(STDERR)
+                 logger.level = Logger::WARN
+                 RightAws::Ec2.new(access_key_id, secret_access_key, :logger => logger)
+               end
     end
   end
 end
