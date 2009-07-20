@@ -88,7 +88,7 @@ module Cliaws
     end
 
     protected
-    def bucket_and_key_name(full_name, create=true)
+    def bucket_and_key_name(full_name, create=false)
       bucket_name, path = full_name.split("/", 2)
       bucket = bucket(bucket_name, create)
       raise UnknownBucket.new(bucket_name) unless bucket
