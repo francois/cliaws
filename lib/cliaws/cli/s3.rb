@@ -224,7 +224,7 @@ EOD
               else
                 who
               end
-        Cliaws.s3.grant(thing, who => permissions.map {|perm| perm.gsub('_', '-')})
+        Cliaws.s3.grant(thing, who => permissions.map {|perm| perm.gsub('-', '_')})
         grants(thing)
       end
 
