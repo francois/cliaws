@@ -4,6 +4,7 @@
 * clis3 buckets: list all buckets
 * clis3 grants: examine grants (permissions) on your buckets or objects
 * clis3 grant, revoke: manage your bucket's or object's permissions
+  Granting using an email address will only work with http://github.com/francois/right_aws.git (1.10.99)
 
 == 1.6.0 2009-07-13
 
