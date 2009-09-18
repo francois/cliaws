@@ -11,7 +11,7 @@ begin
     gemspec.executables       = %w(clis3 clisqs cliec2)
     gemspec.extra_rdoc_files  = %w(History.txt License.txt vendor/right_http_connection-1.2.1/README.txt)
 
-    gemspec.add_dependency "thor", "~> 0.11"
+    gemspec.add_dependency "thor", "< 0.10"
     gemspec.add_dependency "right_aws", "~> 1.10"
   end
 rescue LoadError
