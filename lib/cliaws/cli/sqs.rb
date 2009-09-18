@@ -47,7 +47,7 @@ Pushes a new message to the named queue.
 
 Reads STDIN if LOCAL_FILE and --data are absent.
 EOD
-      method_options :data => :optional
+      method_options :data => :string
       def push(queue_name, local_file=nil)
         raise ArgumentError, "Cannot give both --data and LOCAL_FILE" if options[:data] && local_file
         data = case

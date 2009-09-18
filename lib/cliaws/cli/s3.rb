@@ -90,7 +90,7 @@ $ clis3 put photos/phil_johnson.jpg vacation/2009/phil_johnson.jpg
 $ clis3 put photos/peter.jpg photos/sarah.jpg vacation/2009/photos/hosts
 $ clis3 put movies vacation/2009/movies
 EOD
-      method_options :data => :optional
+      method_options :data => :string
 			def put(*args)
 				paths = args
 				s3_object = paths.pop

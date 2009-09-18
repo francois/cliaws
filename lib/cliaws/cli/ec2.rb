@@ -29,7 +29,7 @@ EOD
 			desc "run AMI", <<EOD
 Launches one or more instances.  Only one group may be specified at this time.
 EOD
-			method_options :count => 1, :type => "m1.small", :keypair => :required, :group => :optional
+			method_options :count => 1, :type => "m1.small", :keypair => :required, :group => :string
 			def run(ami)
 				instances = Cliaws.ec2.run(ami, :type => options[:type], :count => options[:count], :keypair => options[:keypair], :groups => options[:group])
 				result = {"Started" => instances.map {|i| i.instance_id}}
