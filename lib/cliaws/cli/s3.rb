@@ -1,5 +1,6 @@
 require "thor"
 require "cliaws"
+require "yaml"
 
 module Cliaws
   module Cli
