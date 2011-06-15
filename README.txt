@@ -8,7 +8,7 @@ A command-line client for Amazon Web Services.
 
 == FEATURES/PROBLEMS:
 
-* Amazon keys are read from the environment only.  They environment keys must
+* Amazon keys are read from the environment only.  The environment keys must
   be named:  AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 * Minimal amount of error checking is done.  Check the command's status after
   each call.
@@ -29,8 +29,8 @@ Usage from the command line:
     # Returns a YAML representation of response and metadata headers
   $ clis3 rm my_awesome_bucket/a_key_name
 
-	$ cliec2 launch AMI --keypair KEYPAIR
-	$ cliec2 list
+  $ cliec2 launch AMI --keypair KEYPAIR
+  $ cliec2 list
 
 Cliaws may also be used from Ruby:
 
@@ -42,8 +42,8 @@ Cliaws may also be used from Ruby:
   Cliaws.s3.head("my_awesome_bucket/a_key_name")
   Cliaws.s3.rm("my_awesome_bucket/a_key_name")
 
-	Cliaws.ec2.run("AMI", :keypair => "KEYPAIR")
-	Cliaws.ec2.list
+  Cliaws.ec2.run("AMI", :keypair => "KEYPAIR")
+  Cliaws.ec2.list
 
 == REQUIREMENTS:
 
@@ -51,13 +51,13 @@ Cliaws may also be used from Ruby:
 
 == INSTALL:
 
-* sudo gem install cliaws
+* gem install cliaws
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008-2009 François Beausoleil (francois@teksol.info)
+Copyright (c) 2008-2011 François Beausoleil (francois@teksol.info)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
